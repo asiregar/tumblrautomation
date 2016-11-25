@@ -7,11 +7,13 @@ def logged_in?(b)
 end
 
 def tumblr_login(b)
+  details = {email: "a.j.siregar@hotmail.co.uk", password: "#249Lugia"}
   if logged_in?(b)
     puts "already logged in"
   else
-    details = {email: "a.j.siregar@hotmail.co.uk", password: "#249Lugia"}
-    b.goto "https://www.tumblr.com/login"
+    unless b.url == "https://www.tumblr.com/login"
+      b.goto("https://www.tumblr.com/login")
+    end
     (b.text_field id: "signup_determine_email").set(details[:email]+"\n")
     (b.text_field id: "signup_password").set(details[:password]+"\n")
   end
