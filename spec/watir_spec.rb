@@ -44,14 +44,27 @@ end
     b.goto "https://www.tumblr.com/dashboard"
     rnd = SecureRandom.hex
     exists = false
+
     b.goto "https://www.tumblr.com/new/photo"
     b.div(class: "media-url-button").click
     b.div(aria_label: "Paste a URL").send_keys("http://66.media.tumblr.com/6edf13f41f6f41ad451925577751620f/tumblr_ogomj0lz0z1ujy8mro1_1280.jpg\n")
     b.div(class: 'editor-richtext').click
     b.div(class: 'editor-richtext').send_keys("unique id: #{rnd}")
-    binding.pry
     b.button(class: "create_post_button").click
 
+    posts = b.lis(class: "post_container")
+    posts.each do |post|
+      if post.text.include? rnd
+        exists = true
+      end
+    end
+    expect(exists).to be true
+
+    sleep(3)
+
+    b.goto "https://www.tumblr.com/blog/calming-lavender"
+    binding.pry
+    expect(b.text.include? rnd).to be true
   end
 
 end
